@@ -17,6 +17,12 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return new ErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorDTO handleUnauthorized(UnauthorizedException e) {
+        return new ErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDTO handleBadRequest(BadRequestException e) {
