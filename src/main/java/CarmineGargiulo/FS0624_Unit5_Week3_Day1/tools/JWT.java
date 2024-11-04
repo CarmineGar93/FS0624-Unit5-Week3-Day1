@@ -1,6 +1,7 @@
 package CarmineGargiulo.FS0624_Unit5_Week3_Day1.tools;
 
 import CarmineGargiulo.FS0624_Unit5_Week3_Day1.entities.Employee;
+import CarmineGargiulo.FS0624_Unit5_Week3_Day1.exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,5 +21,13 @@ public class JWT {
                 .subject(String.valueOf(employee.getEmployeeId()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
+    }
+
+    public void verifyToken(String token) {
+        try {
+            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parse(token);
+        } catch (Exception e) {
+            throw new UnauthorizedException("Invalid token. You must re-do login");
+        }
     }
 }
